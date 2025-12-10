@@ -1,13 +1,14 @@
 import type { NextConfig } from "next";
 
-const repoName = "emotion-detector-web";
+const isProd = process.env.NODE_ENV === "production";
+const repo = "emotion-detector-web";
 
 
 const nextConfig: NextConfig = {
   /* config options here */
   output: "export",
-  basePath: `/${repoName}`,
-  assetPrefix: `/${repoName}/`,
+  basePath: isProd ? `/${repo}` : "",
+  assetPrefix: isProd ? `/${repo}/` : "",
   reactCompiler: true,
 };
 

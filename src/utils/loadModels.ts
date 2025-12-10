@@ -1,18 +1,11 @@
 import * as faceapi from "face-api.js";
 
-const basePath =
-    process.env.NEXT_PUBLIC_REPO
-        ? `/${process.env.NEXT_PUBLIC_REPO}`
-        : "";
+const base = process.env.NODE_ENV === "production"
+    ? "/emotion-detector-web/models"
+    : "/models";
 
-export const MODEL_URL = `${basePath}/models`;
-
-export async function loadModels() {
-    await Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-        faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-        faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
-    ]);
-
-    console.log("Models loaded:", MODEL_URL);
-}
+export const loadModels = async () => {
+    await faceapi.nets.tinyFaceDetector.loadFromUri(base);
+    await faceapi.nets.faceExpressionNet.loadFromUri(base);
+    await faceapi.nets.ageGenderNet.loadFromUri(base);
+};

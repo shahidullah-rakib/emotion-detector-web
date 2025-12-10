@@ -1,20 +1,18 @@
 import * as faceapi from "face-api.js";
 
-export const loadModels = async () => {
-    try {
-        const MODEL_URL = "/models";
+const basePath =
+    process.env.NEXT_PUBLIC_REPO
+        ? `/${process.env.NEXT_PUBLIC_REPO}`
+        : "";
 
-        await Promise.all([
-            faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-            faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-            faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
-        ]);
+export const MODEL_URL = `${basePath}/models`;
 
-        console.log("Models Loaded Successfully!");
-        return true;
-    } catch (error) {
-        console.error("Models not Loaded!");
-        return false;
-    }
+export async function loadModels() {
+    await Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+        faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+        faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
+    ]);
 
-};
+    console.log("Models loaded:", MODEL_URL);
+}
